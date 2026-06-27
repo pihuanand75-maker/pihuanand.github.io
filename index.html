@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pihu Anand — B.Pharm student, GPAT 2026 Qualified (AIR 1798), researcher in cervical cancer & AI in pharmaceutical sciences." />
+  <meta property="og:title" content="Pihu Anand | Pharmaceutical Sciences" />
+  <meta property="og:description" content="GPAT 2026 AIR 1798 · Cervical Cancer Research · AI in Pharma · Parul University" />
+  <meta property="og:type" content="website" />
+  <title>Pihu Anand | Pharmaceutical Sciences</title>
+
+  <!-- TYPOGRAPHY -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- LENIS SMOOTH SCROLL -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<style>
+/* ─── DESIGN TOKENS ──────────────────────────────────────────────── */
+:root {
+  --color-bg:             #080c10;
+  --color-surface-1:      #0d1117;
+  --color-surface-2:      #121820;
+  --color-surface-3:      #192030;
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: rgba(255,255,255,0.70);
+  --color-text-muted:     rgba(255,255,255,0.42);
+  --color-accent:         #00C2E8;
+  --color-accent-dim:     #0099ba;
+  --color-accent-glow:    rgba(0,194,232,0.18);
+  --color-accent-subtle:  rgba(0,194,232,0.07);
+  --color-border:         rgba(255,255,255,0.07);
+  --color-border-accent:  rgba(0,194,232,0.25);
+
+  --font-display: 'Cabinet Grotesk', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  --space-1:  8px;
+  --space-2:  16px;
+  --space-3:  24px;
+  --space-4:  32px;
+  --space-6:  48px;
+  --space-8:  64px;
+  --space-12: 96px;
+  --space-16: 128px;
+
+  --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --dur-fast:   180ms;
+  --dur-base:   380ms;
+  --dur-slow:   650ms;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+}
+
+/* ─── RESET ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body.no-scroll { overflow: hidden; }
+
+::selection { background: var(--color-accent); color: #000; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 99px; }
+
+/* Focus */
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── NOISE OVERLAY (DEPTH LAYER 5) ─────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.048'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* ─── CURSOR (DEPTH LAYER 8) ─────────────────────────────────────── */
+.cursor-dot {
+  position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+  background: var(--color-accent); border-radius: 50%;
+  pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: transform var(--dur-fast) var(--ease-expo), background var(--dur-base);
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+  border: 1.5px solid rgba(0,194,232,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s var(--ease-expo), height 0.3s var(--ease-expo),
+              border-color 0.3s, background 0.3s;
+}
+.cursor-ring.hovered {
+  width: 48px; height: 48px;
+  background: rgba(0,194,232,0.06);
+  border-color: var(--color-accent);
+}
+
+/* ─── PRELOADER ──────────────────────────────────────────────────── */
+#preloader {
+  position: fixed; inset: 0; z-index: 9998;
+  background: var(--color-bg);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: var(--space-3);
+}
+.preloader-logo {
+  font-family: var(--font-display);
+  font-weight: 900; font-size: clamp(3rem, 8vw, 6rem);
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  opacity: 0;
+  animation: fadeInLogo 0.5s var(--ease-expo) 0.2s forwards;
+}
+.preloader-logo span { color: var(--color-accent); }
+.preloader-counter {
+  font-family: var(--font-mono);
+  font-size: 0.8rem; font-weight: 300;
+  color: var(--color-text-muted);
+  letter-spacing: 0.12em;
+}
+.preloader-line {
+  position: absolute; bottom: 0; left: 0;
+  height: 1px; background: var(--color-accent);
+  width: 0%; transition: width 0.1s linear;
+}
+@keyframes fadeInLogo {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  padding: var(--space-3) var(--space-6);
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background var(--dur-base), backdrop-filter var(--dur-base), padding var(--dur-base);
+}
+nav.scrolled {
+  background: rgba(8,12,16,0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--color-border);
+  padding-top: var(--space-2); padding-bottom: var(--space-2);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+.nav-logo span { color: var(--color-accent); }
+.nav-links {
+  display: flex; align-items: center; gap: var(--space-6);
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 400; letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  position: relative; padding-bottom: 2px;
+  transition: color var(--dur-fast);
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1.5px; background: var(--color-accent);
+  transition: width var(--dur-base) var(--ease-expo);
+}
+.nav-links a:hover { color: var(--color-text-primary); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 500; letter-spacing: 0.08em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border-accent);
+  padding: 7px 16px; border-radius: var(--radius-sm);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.nav-cta:hover { background: var(--color-accent); color: #000; }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  width: 28px; cursor: pointer; z-index: 1001;
+}
+.nav-hamburger span {
+  display: block; height: 1.5px;
+  background: var(--color-text-primary);
+  transition: transform var(--dur-base) var(--ease-expo), opacity var(--dur-base);
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile overlay */
+.nav-mobile-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: var(--color-bg);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-expo);
+}
+.nav-mobile-overlay.open { opacity: 1; pointer-events: all; }
+.nav-mobile-links {
+  list-style: none; text-align: center;
+  display: flex; flex-direction: column; gap: var(--space-4);
+}
+.nav-mobile-links a {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12vw, 5rem);
+  font-weight: 800; letter-spacing: -0.03em;
+  color: var(--color-text-secondary);
+  transition: color var(--dur-fast);
+}
+.nav-mobile-links a:hover { color: var(--color-accent); }
+
+/* ─── CONTAINER ──────────────────────────────────────────────────── */
+.container {
+  max-width: 1240px; margin: 0 auto;
+  padding-left: var(--space-6); padding-right: var(--space-6);
+}
+
+/* ─── HERO SECTION ───────────────────────────────────────────────── */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden; padding-top: var(--space-16);
+}
+
+/* Molecular network canvas */
+#molecule-canvas {
+  position: absolute; inset: 0;
+  z-index: 0; opacity: 0.35;
+}
+
+/* Ambient glow fields (DEPTH LAYER 6) */
+.glow-field {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; z-index: 1;
+  filter: blur(120px);
+}
+.glow-1 {
+  width: 700px; height: 700px; top: -200px; right: -200px;
+  background: radial-gradient(circle, rgba(0,194,232,0.09) 0%, transparent 70%);
+}
+.glow-2 {
+  width: 500px; height: 500px; bottom: 0; left: 100px;
+  background: radial-gradient(circle, rgba(0,153,186,0.06) 0%, transparent 70%);
+}
+.glow-cursor {
+  position: fixed; width: 600px; height: 600px;
+  border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(100px);
+  background: radial-gradient(circle, rgba(0,194,232,0.06) 0%, transparent 60%);
+  transform: translate(-50%,-50%);
+  transition: opacity 0.4s;
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  padding: var(--space-12) 0;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  font-weight: 400; letter-spacing: 0.18em;
+  color: var(--color-accent); text-transform: uppercase;
+  margin-bottom: var(--space-4);
+  opacity: 0; transform: translateY(16px);
+}
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 10rem);
+  font-weight: 900; line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+}
+.hero-name .word { display: inline-block; overflow: hidden; }
+.hero-name .word-inner {
+  display: inline-block;
+  opacity: 0; transform: translateY(100%);
+}
+.hero-tagline {
+  font-family: var(--font-body); font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300; color: var(--color-text-secondary);
+  max-width: 560px; line-height: 1.6;
+  opacity: 0; transform: translateY(20px);
+  margin-bottom: var(--space-6);
+}
+.hero-stats {
+  display: flex; gap: var(--space-6); margin-bottom: var(--space-8);
+  opacity: 0; transform: translateY(16px);
+  flex-wrap: wrap;
+}
+.hero-stat {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.hero-stat-num {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 2rem; letter-spacing: -0.04em;
+  color: var(--color-text-primary); line-height: 1;
+}
+.hero-stat-num span { color: var(--color-accent); }
+.hero-stat-label {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  font-weight: 400; letter-spacing: 0.14em;
+  color: var(--color-text-muted); text-transform: uppercase;
+}
+.hero-actions {
+  display: flex; gap: var(--space-3); align-items: center;
+  flex-wrap: wrap;
+  opacity: 0; transform: translateY(16px);
+}
+.btn-primary {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  font-weight: 500; letter-spacing: 0.08em;
+  color: #000; background: var(--color-accent);
+  padding: 14px 28px; border-radius: var(--radius-sm);
+  transition: background var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-base);
+}
+.btn-primary:hover {
+  background: #fff; transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,194,232,0.25);
+}
+.btn-primary:active { transform: scale(0.97); }
+.btn-secondary {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  font-weight: 400; letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  padding: 14px 28px; border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-fast);
+}
+.btn-secondary:hover {
+  border-color: var(--color-accent); color: var(--color-accent);
+  transform: translateY(-2px);
+}
+.btn-secondary:active { transform: scale(0.97); }
+
+.hero-scroll-indicator {
+  position: absolute; bottom: var(--space-6); left: var(--space-6);
+  z-index: 2; display: flex; align-items: center; gap: var(--space-2);
+  opacity: 0;
+}
+.scroll-line {
+  width: 40px; height: 1px;
+  background: var(--color-accent); opacity: 0.5;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+.scroll-text {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  letter-spacing: 0.16em; color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleX(1); opacity: 0.5; }
+  50% { transform: scaleX(0.6); opacity: 1; }
+}
+
+/* ─── SECTION COMMON ─────────────────────────────────────────────── */
+section { position: relative; padding: var(--space-16) 0; }
+.section-label {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  font-weight: 400; letter-spacing: 0.22em;
+  color: var(--color-accent); text-transform: uppercase;
+  margin-bottom: var(--space-4);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.section-label::before {
+  content: ''; display: block; width: 24px; height: 1px;
+  background: var(--color-accent);
+}
+.section-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em;
+  color: var(--color-text-primary); line-height: 1.05;
+  margin-bottom: var(--space-6);
+}
+.reveal-up {
+  opacity: 0; transform: translateY(48px);
+}
+
+/* ─── ABOUT SECTION ──────────────────────────────────────────────── */
+#about { background: var(--color-surface-1); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: start;
+}
+.about-visual {
+  position: relative; display: flex;
+  align-items: center; justify-content: center;
+  min-height: 360px;
+}
+.about-dna {
+  position: relative; width: 220px; height: 360px;
+}
+.dna-strand { position: absolute; inset: 0; }
+.about-text p {
+  font-size: 1.05rem; font-weight: 300;
+  color: var(--color-text-secondary); line-height: 1.75;
+  margin-bottom: var(--space-4);
+}
+.about-text p:last-of-type { margin-bottom: var(--space-8); }
+.about-text strong { color: var(--color-text-primary); font-weight: 500; }
+.status-badge {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border-accent);
+  padding: 6px 14px; border-radius: 99px;
+  margin-top: var(--space-3);
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+.stats-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4); margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+.stat-block { text-align: left; }
+.stat-number {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 2.6rem; letter-spacing: -0.04em;
+  color: var(--color-text-primary); line-height: 1;
+}
+.stat-number .accent { color: var(--color-accent); }
+.stat-desc {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  letter-spacing: 0.12em; color: var(--color-text-muted);
+  text-transform: uppercase; margin-top: 6px;
+}
+
+/* ─── SKILLS SECTION ─────────────────────────────────────────────── */
+#skills { background: var(--color-bg); }
+.skills-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.skill-card {
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: border-color var(--dur-base), box-shadow var(--dur-base), transform var(--dur-base);
+  position: relative; overflow: hidden;
+  transform-style: preserve-3d; perspective: 1000px;
+}
+.skill-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0;
+  transition: opacity var(--dur-base);
+}
+.skill-card:hover {
+  border-color: var(--color-border-accent);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3), 0 0 60px var(--color-accent-glow);
+  transform: translateY(-4px);
+}
+.skill-card:hover::before { opacity: 1; }
+.skill-card-header {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.skill-card-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: var(--color-accent-subtle);
+  border: 1px solid var(--color-border-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--color-accent); font-weight: 500;
+}
+.skill-card-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 0.95rem; letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+.skill-tags {
+  display: flex; flex-wrap: wrap; gap: var(--space-1);
+}
+.skill-tag {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  font-weight: 400; letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--color-border);
+  padding: 5px 11px; border-radius: 99px;
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.skill-tag:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* ─── WORK / PROJECTS SECTION ────────────────────────────────────── */
+#work { background: var(--color-surface-1); }
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: var(--space-3);
+}
+.project-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  position: relative; overflow: hidden;
+  transition: border-color var(--dur-base), transform var(--dur-base), box-shadow var(--dur-base);
+  cursor: default;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 240px;
+}
+.project-card.featured {
+  grid-column: span 2;
+  min-height: 340px;
+}
+.project-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--color-accent-subtle), transparent);
+  opacity: 0; transition: opacity var(--dur-base);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+.project-card:hover {
+  border-color: var(--color-border-accent);
+  transform: translateY(-4px) rotateX(1deg);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4), 0 0 40px var(--color-accent-glow);
+}
+.project-card:hover::after { opacity: 1; }
+.project-top { position: relative; z-index: 1; }
+.project-category {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  font-weight: 400; letter-spacing: 0.18em;
+  color: var(--color-accent); text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+.project-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  letter-spacing: -0.02em; line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+.project-desc {
+  font-size: 0.88rem; font-weight: 300;
+  color: var(--color-text-secondary); line-height: 1.65;
+}
+.project-bottom {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  margin-top: var(--space-4);
+}
+.project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.project-tag {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  font-weight: 400; letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 3px 8px; border-radius: 99px;
+}
+.project-year {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: var(--color-text-muted); letter-spacing: 0.08em;
+  white-space: nowrap; margin-left: var(--space-2);
+}
+.project-accent-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  transition: width 0.5s var(--ease-expo);
+}
+.project-card:hover .project-accent-bar { width: 60%; }
+
+/* ─── EXPERIENCE TIMELINE ────────────────────────────────────────── */
+#experience { background: var(--color-bg); }
+.timeline {
+  position: relative; padding-left: var(--space-8);
+}
+.timeline-line {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px; background: var(--color-border);
+  transform-origin: top;
+}
+.timeline-line-fill {
+  position: absolute; left: 0; top: 0;
+  width: 1px; height: 0%;
+  background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-dim));
+  transform-origin: top;
+  transition: height 0.1s;
+}
+.timeline-entry {
+  position: relative; margin-bottom: var(--space-12);
+  opacity: 0; transform: translateX(-24px);
+}
+.timeline-entry:last-child { margin-bottom: 0; }
+.timeline-dot {
+  position: absolute; left: calc(-1 * var(--space-8) - 3px); top: 6px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  transition: background var(--dur-base), border-color var(--dur-base), box-shadow var(--dur-base);
+}
+.timeline-dot.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+}
+.entry-header { margin-bottom: var(--space-3); }
+.entry-range {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  font-weight: 300; letter-spacing: 0.12em;
+  color: var(--color-accent); text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.entry-company {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 1.35rem; letter-spacing: -0.02em;
+  color: var(--color-text-primary); line-height: 1.15;
+}
+.entry-title {
+  font-family: var(--font-body); font-size: 0.9rem;
+  font-weight: 400; color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+.entry-location {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--color-text-muted); letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+.entry-achievements {
+  list-style: none; display: flex; flex-direction: column; gap: var(--space-2);
+}
+.entry-achievements li {
+  display: flex; align-items: flex-start; gap: var(--space-2);
+  font-size: 0.9rem; font-weight: 300;
+  color: var(--color-text-secondary); line-height: 1.65;
+}
+.entry-achievements li::before {
+  content: ''; display: block; flex-shrink: 0;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--color-accent); margin-top: 9px;
+}
+
+/* ─── CONFERENCES / CREDENTIALS ──────────────────────────────────── */
+#credentials { background: var(--color-surface-1); }
+.credentials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+.credential-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  transition: border-color var(--dur-base), transform var(--dur-base);
+}
+.credential-card:hover {
+  border-color: var(--color-border-accent);
+  transform: translateY(-3px);
+}
+.credential-type {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  letter-spacing: 0.16em; color: var(--color-accent);
+  text-transform: uppercase; margin-bottom: var(--space-2);
+}
+.credential-name {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 0.95rem; letter-spacing: -0.01em;
+  color: var(--color-text-primary); line-height: 1.25;
+  margin-bottom: 6px;
+}
+.credential-org {
+  font-size: 0.8rem; color: var(--color-text-secondary);
+  font-weight: 300; line-height: 1.5;
+  margin-bottom: 6px;
+}
+.credential-year {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--color-text-muted); letter-spacing: 0.1em;
+}
+
+/* ─── CONTACT SECTION ────────────────────────────────────────────── */
+#contact {
+  background: var(--color-bg);
+  padding-bottom: var(--space-8);
+}
+.contact-inner {
+  text-align: center; max-width: 700px;
+  margin: 0 auto;
+}
+.contact-headline {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  letter-spacing: -0.04em; line-height: 0.95;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+}
+.contact-headline em {
+  color: var(--color-accent); font-style: normal;
+}
+.contact-sub {
+  font-size: 1.05rem; font-weight: 300;
+  color: var(--color-text-secondary); line-height: 1.65;
+  margin-bottom: var(--space-8);
+}
+.contact-email {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1rem, 3vw, 1.6rem);
+  letter-spacing: -0.02em; color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-accent);
+  padding-bottom: 4px; margin-bottom: var(--space-8);
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.contact-email:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.contact-links {
+  display: flex; justify-content: center;
+  gap: var(--space-4); flex-wrap: wrap;
+  margin-bottom: var(--space-12);
+}
+.contact-link {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 10px 20px; border-radius: var(--radius-sm);
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.contact-link:hover { color: var(--color-accent); border-color: var(--color-border-accent); }
+
+/* ─── FOOTER ─────────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.08em; color: var(--color-text-muted);
+}
+.footer-back {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast);
+  cursor: pointer;
+}
+.footer-back:hover { color: var(--color-accent); }
+
+/* ─── HORIZONTAL RULE ────────────────────────────────────────────── */
+.section-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr; gap: var(--space-8); }
+  .about-visual { min-height: 260px; }
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .project-card.featured { grid-column: span 2; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .credentials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  nav { padding: var(--space-3) var(--space-4); }
+  .container { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  section { padding: var(--space-12) 0; }
+  .bento-grid { grid-template-columns: 1fr; }
+  .project-card.featured { grid-column: span 1; }
+  .stats-row { grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+  .credentials-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: var(--space-4); }
+  .timeline { padding-left: var(--space-6); }
+  footer { flex-direction: column; gap: var(--space-2); text-align: center; }
+}
+@media (max-width: 480px) {
+  .hero-name { font-size: clamp(2.8rem, 12vw, 5rem); }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .hero-stats { flex-direction: column; gap: var(--space-3); }
+  .contact-links { flex-direction: column; align-items: center; }
+}
+
+/* ─── REDUCED MOTION ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ─── LOADED STATE ───────────────────────────────────────────────── */
+body.loaded #preloader { pointer-events: none; }
+</style>
+</head>
+
+<body class="no-scroll">
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="glow-cursor" id="glowCursor" aria-hidden="true"></div>
+
+<!-- PRELOADER -->
+<div id="preloader" role="status" aria-label="Loading">
+  <div class="preloader-logo">P<span>.</span>A</div>
+  <div class="preloader-counter" id="preloaderCounter">000</div>
+  <div class="preloader-line" id="preloaderLine"></div>
+</div>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="nav-mobile-overlay" id="mobileOverlay" aria-hidden="true">
+  <ul class="nav-mobile-links">
+    <li><a href="#about" class="mobile-nav-link" aria-label="About">About</a></li>
+    <li><a href="#work" class="mobile-nav-link" aria-label="Work">Work</a></li>
+    <li><a href="#experience" class="mobile-nav-link" aria-label="Experience">Experience</a></li>
+    <li><a href="#contact" class="mobile-nav-link" aria-label="Contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="mainNav" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="Home">Pihu<span>.</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:pihuanand75@gmail.com" class="nav-cta">Get in Touch</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero">
+  <canvas id="molecule-canvas" aria-hidden="true"></canvas>
+  <div class="glow-field glow-1" aria-hidden="true"></div>
+  <div class="glow-field glow-2" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Pharmaceutical Sciences · GPAT 2026 Qualified</div>
+      <h1 class="hero-name" aria-label="Pihu Anand">
+        <span class="word"><span class="word-inner">Pihu</span></span>
+        <br>
+        <span class="word"><span class="word-inner">Anand</span></span>
+      </h1>
+      <p class="hero-tagline">
+        B.Pharm researcher merging classical pharmaceutical science with AI-driven drug discovery and precision medicine — at Parul University and beyond.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">AIR <span>1798</span></div>
+          <div class="hero-stat-label">GPAT 2026</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num"><span>2</span>+</div>
+          <div class="hero-stat-label">Research Projects</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num"><span>5</span>+</div>
+          <div class="hero-stat-label">National Events</div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="#work" class="btn-primary">View Research</a>
+        <a href="mailto:pihuanand75@gmail.com" class="btn-secondary">Open to Opportunities</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator" id="scrollIndicator" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" aria-label="About Pihu Anand">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal-up">
+        <div class="section-label">About</div>
+        <h2 class="section-title">Science as a<br>precision instrument.</h2>
+        <p>
+          I am a third-year <strong>Bachelor of Pharmacy</strong> student at Parul University, Vadodara, with a sharp focus on pharmaceutical sciences, drug development, and the emerging interface of <strong>AI in clinical pharmacology</strong>. My work spans structured literature research, national competitive performance, and direct industrial exposure to GMP-regulated manufacturing environments.
+        </p>
+        <p>
+          Qualifying GPAT 2026 with <strong>All India Rank 1798</strong> across 50,000+ candidates validated my command of core pharmaceutical disciplines — Pharmaceutics, Pharmacology, Pharmaceutical Chemistry, and Pharmacognosy. I work at the intersection of evidence-based scientific writing and forward-looking questions in precision medicine.
+        </p>
+        <p>
+          Currently contributing to faculty-guided research on cervical cancer, exploring HPV-associated pathogenesis and immunotherapeutic strategies. Available for research collaborations, internships, and pharmaceutical industry opportunities from 2025 onward.
+        </p>
+        <div class="status-badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          Open to Research & Industry Opportunities
+        </div>
+        <div class="stats-row">
+          <div class="stat-block">
+            <div class="stat-number" data-target="3" data-suffix="+">0<span class="accent">+</span></div>
+            <div class="stat-desc">Years at Parul</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" data-target="50" data-suffix="K+">0<span class="accent">K+</span></div>
+            <div class="stat-desc">GPAT Competitors</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" data-target="5" data-suffix="+">0<span class="accent">+</span></div>
+            <div class="stat-desc">Certifications</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual reveal-up">
+        <svg class="about-dna" viewBox="0 0 220 360" xmlns="http://www.w3.org/2000/svg" aria-label="DNA helix illustration" role="img">
+          <defs>
+            <linearGradient id="dnaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#00C2E8" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#0099ba" stop-opacity="0.2"/>
+            </linearGradient>
+            <linearGradient id="dnaGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#00C2E8" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#0099ba" stop-opacity="0.8"/>
+            </linearGradient>
+            <filter id="dnaGlow">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Strand 1 -->
+          <path id="strand1" d="M 60 20 C 160 40, 60 80, 160 100 C 60 120, 160 160, 60 180 C 160 200, 60 240, 160 260 C 60 280, 160 320, 60 340"
+            fill="none" stroke="url(#dnaGrad1)" stroke-width="2.5" filter="url(#dnaGlow)"/>
+          <!-- Strand 2 -->
+          <path id="strand2" d="M 160 20 C 60 40, 160 80, 60 100 C 160 120, 60 160, 160 180 C 60 200, 160 240, 60 260 C 160 280, 60 320, 160 340"
+            fill="none" stroke="url(#dnaGrad2)" stroke-width="2.5" filter="url(#dnaGlow)"/>
+          <!-- Base pairs -->
+          <g opacity="0.5" stroke="#00C2E8" stroke-width="1">
+            <line x1="83" y1="53" x2="137" y2="53"/><line x1="83" y1="93" x2="137" y2="93"/>
+            <line x1="83" y1="133" x2="137" y2="133"/><line x1="83" y1="173" x2="137" y2="173"/>
+            <line x1="83" y1="213" x2="137" y2="213"/><line x1="83" y1="253" x2="137" y2="253"/>
+            <line x1="83" y1="293" x2="137" y2="293"/>
+          </g>
+          <!-- Nodes -->
+          <g fill="#00C2E8" filter="url(#dnaGlow)">
+            <circle cx="60" cy="20" r="4"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="160" cy="100" r="4"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="60" cy="180" r="4"><animate attributeName="opacity" values="1;0.4;1" dur="1.8s" repeatCount="indefinite"/></circle>
+            <circle cx="160" cy="260" r="4"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="60" cy="340" r="4"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle>
+          </g>
+          <!-- Label -->
+          <text x="110" y="355" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(255,255,255,0.25)" letter-spacing="2">PHARM · SCI</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills" aria-label="Skills and expertise">
+  <div class="container">
+    <div class="section-label reveal-up">Expertise</div>
+    <h2 class="section-title reveal-up">Domains I operate in.</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal-up">
+        <div class="skill-card-header">
+          <div class="skill-card-icon">Rx</div>
+          <div class="skill-card-title">Pharmaceutical Sciences</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Pharmaceutics</span>
+          <span class="skill-tag">Pharmacology</span>
+          <span class="skill-tag">Pharmaceutical Chemistry</span>
+          <span class="skill-tag">Pharmacognosy</span>
+          <span class="skill-tag">Drug Formulation</span>
+          <span class="skill-tag">Dosage Forms</span>
+          <span class="skill-tag">GMP Standards</span>
+          <span class="skill-tag">Quality Assurance</span>
+        </div>
+      </div>
+      <div class="skill-card reveal-up">
+        <div class="skill-card-header">
+          <div class="skill-card-icon">AI</div>
+          <div class="skill-card-title">AI & Precision Medicine</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">AI in Drug Development</span>
+          <span class="skill-tag">Precision Medicine</span>
+          <span class="skill-tag">Multi-omics</span>
+          <span class="skill-tag">Genomics</span>
+          <span class="skill-tag">Proteomics</span>
+          <span class="skill-tag">Metabolomics</span>
+          <span class="skill-tag">ML in Pharma</span>
+          <span class="skill-tag">Intelligent QC Systems</span>
+        </div>
+      </div>
+      <div class="skill-card reveal-up">
+        <div class="skill-card-header">
+          <div class="skill-card-icon">Lab</div>
+          <div class="skill-card-title">Laboratory & Analysis</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Titration</span>
+          <span class="skill-tag">Pharmacopoeial Analysis</span>
+          <span class="skill-tag">Microscopy</span>
+          <span class="skill-tag">Drug Dissolution Testing</span>
+          <span class="skill-tag">In-Process QC</span>
+          <span class="skill-tag">API Synthesis Observation</span>
+        </div>
+      </div>
+      <div class="skill-card reveal-up">
+        <div class="skill-card-header">
+          <div class="skill-card-icon">Rw</div>
+          <div class="skill-card-title">Research & Scientific Writing</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Literature Review</span>
+          <span class="skill-tag">PubMed Databases</span>
+          <span class="skill-tag">WHO Clinical Databases</span>
+          <span class="skill-tag">Evidence-Based Writing</span>
+          <span class="skill-tag">Biomedical Literature Standards</span>
+          <span class="skill-tag">Scientific Communication</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WORK / PROJECTS -->
+<section id="work" aria-label="Research and projects">
+  <div class="container">
+    <div class="section-label reveal-up">Research & Projects</div>
+    <h2 class="section-title reveal-up">Work that matters<br>at the molecular level.</h2>
+    <div class="bento-grid">
+
+      <div class="project-card featured reveal-up">
+        <div class="project-accent-bar"></div>
+        <div class="project-top">
+          <div class="project-category">Active Research · Faculty-Guided</div>
+          <h3 class="project-title">Cervical Cancer: Pathogenesis, Pharmacology & Immunotherapy</h3>
+          <p class="project-desc">
+            Structured literature review examining HPV-associated pathogenesis, epidemiology, pharmacological treatment modalities, and emerging immunotherapeutic strategies. Synthesizing evidence from peer-reviewed journals, PubMed, and WHO clinical databases. Targeting academic publication under faculty supervision at Parul University's Department of Pharmacy.
+          </p>
+        </div>
+        <div class="project-bottom">
+          <div class="project-tags">
+            <span class="project-tag">Immunotherapy</span>
+            <span class="project-tag">Oncology</span>
+            <span class="project-tag">PubMed</span>
+            <span class="project-tag">WHO Databases</span>
+          </div>
+          <span class="project-year">2024 – Present</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up">
+        <div class="project-accent-bar"></div>
+        <div class="project-top">
+          <div class="project-category">AI Integration · Certificate Program</div>
+          <h3 class="project-title">AI in Pharmaceutical Manufacturing</h3>
+          <p class="project-desc">
+            Studied AI-driven automation in GMP-regulated manufacturing: intelligent QC systems, batch processing optimization, predictive maintenance, and regulatory compliance workflows.
+          </p>
+        </div>
+        <div class="project-bottom">
+          <div class="project-tags">
+            <span class="project-tag">GMP</span>
+            <span class="project-tag">AI Automation</span>
+            <span class="project-tag">Operations</span>
+          </div>
+          <span class="project-year">2025</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up">
+        <div class="project-accent-bar"></div>
+        <div class="project-top">
+          <div class="project-category">Multi-Omics · Precision Medicine</div>
+          <h3 class="project-title">Omics & Precision Medicine Workshop</h3>
+          <p class="project-desc">
+            Deep dive into genomics, proteomics, and metabolomics convergence with AI-powered translational research pipelines for patient-specific therapeutic decision-making.
+          </p>
+        </div>
+        <div class="project-bottom">
+          <div class="project-tags">
+            <span class="project-tag">Genomics</span>
+            <span class="project-tag">Proteomics</span>
+            <span class="project-tag">ML</span>
+          </div>
+          <span class="project-year">Aug 2025</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up">
+        <div class="project-accent-bar"></div>
+        <div class="project-top">
+          <div class="project-category">Industrial Exposure · GMP</div>
+          <h3 class="project-title">Biopharma Manufacturing Floor Study</h3>
+          <p class="project-desc">
+            End-to-end pharmaceutical manufacturing observation: API synthesis, formulation development (tablets, capsules, injectables), cleanroom operations, and regulatory documentation aligned to Schedule M / WHO-GMP.
+          </p>
+        </div>
+        <div class="project-bottom">
+          <div class="project-tags">
+            <span class="project-tag">API Synthesis</span>
+            <span class="project-tag">WHO-GMP</span>
+            <span class="project-tag">QA</span>
+          </div>
+          <span class="project-year">2024</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up" style="grid-column: span 2;">
+        <div class="project-accent-bar"></div>
+        <div class="project-top">
+          <div class="project-category">National Conclave · NIPER Mohali</div>
+          <h3 class="project-title">SAMPRABHAV 2026 — National Pharma Conclave</h3>
+          <p class="project-desc">
+            Engaged with expert deliberations at India's premier pharmaceutical institute (Ministry of Chemicals & Fertilizers) — covering pharmaceutical management, drug policy, biopharma industry trends, and student-led research across two intensive days.
+          </p>
+        </div>
+        <div class="project-bottom">
+          <div class="project-tags">
+            <span class="project-tag">Drug Policy</span>
+            <span class="project-tag">Biopharma</span>
+            <span class="project-tag">NIPER</span>
+          </div>
+          <span class="project-year">Feb 2026</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- EXPERIENCE TIMELINE -->
+<section id="experience" aria-label="Education and experience timeline">
+  <div class="container">
+    <div class="section-label reveal-up">Timeline</div>
+    <h2 class="section-title reveal-up">Education &<br>Professional Path.</h2>
+    <div class="timeline" id="timeline">
+      <div class="timeline-line" aria-hidden="true"></div>
+      <div class="timeline-line-fill" id="timelineFill" aria-hidden="true"></div>
+
+      <div class="timeline-entry" data-entry>
+        <div class="timeline-dot"></div>
+        <div class="entry-header">
+          <div class="entry-range">Mar 2026</div>
+          <div class="entry-company">GPAT 2026 — AIR 1798</div>
+          <div class="entry-title">National Board of Examinations in Medical Sciences (NBEMS)</div>
+          <div class="entry-location">National Level · Computer-Based Exam</div>
+        </div>
+        <ul class="entry-achievements">
+          <li>Secured All India Rank 1798 among 50,000+ candidates in the Graduate Pharmacy Aptitude Test — qualifying for M.Pharm admissions across 800+ AICTE/PCI-accredited institutions.</li>
+          <li>Demonstrated command across a 500-mark, 3-hour examination spanning Pharmaceutics, Pharmacology, Pharmaceutical Chemistry, and Pharmacognosy.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-entry" data-entry>
+        <div class="timeline-dot"></div>
+        <div class="entry-header">
+          <div class="entry-range">2024 – Present</div>
+          <div class="entry-company">Student Research Author</div>
+          <div class="entry-title">Parul University, Department of Pharmacy</div>
+          <div class="entry-location">Vadodara, India</div>
+        </div>
+        <ul class="entry-achievements">
+          <li>Conducting in-depth structured literature review on cervical cancer: epidemiology, HPV-associated pathogenesis, pharmacological treatment modalities, and immunotherapeutic strategies — targeting peer-reviewed academic publication.</li>
+          <li>Synthesizing evidence from PubMed and WHO clinical databases, maintaining scientific accuracy and biomedical literature standards throughout.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-entry" data-entry>
+        <div class="timeline-dot"></div>
+        <div class="entry-header">
+          <div class="entry-range">2024 – 2027</div>
+          <div class="entry-company">Academic Program Committee Member</div>
+          <div class="entry-title">Parul University</div>
+          <div class="entry-location">Vadodara, India</div>
+        </div>
+        <ul class="entry-achievements">
+          <li>Serving for three consecutive years contributing to curriculum-related planning, student academic initiatives, and institutional program development.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-entry" data-entry>
+        <div class="timeline-dot"></div>
+        <div class="entry-header">
+          <div class="entry-range">June 2023 – May 2027</div>
+          <div class="entry-company">Bachelor of Pharmacy (B.Pharm)</div>
+          <div class="entry-title">Parul University</div>
+          <div class="entry-location">Vadodara, India</div>
+        </div>
+        <ul class="entry-achievements">
+          <li>Building a rigorous foundation across pharmaceutical sciences, drug delivery systems, clinical pharmacy, pharmacovigilance, and laboratory-based analytical methods.</li>
+          <li>Active participant in departmental seminars, poster presentations, and interdisciplinary academic events fostering scientific communication skills.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-entry" data-entry>
+        <div class="timeline-dot"></div>
+        <div class="entry-header">
+          <div class="entry-range">Completed Feb 2023</div>
+          <div class="entry-company">Higher Secondary Certificate (HSC)</div>
+          <div class="entry-title">L.R. Tiwari College of Arts, Science & Commerce</div>
+          <div class="entry-location">Mumbai, India</div>
+        </div>
+        <ul class="entry-achievements">
+          <li>Completed HSC with a Science stream focus, establishing the academic foundation for pharmaceutical sciences at university level.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CREDENTIALS & CONFERENCES -->
+<section id="credentials" aria-label="Credentials and conferences">
+  <div class="container">
+    <div class="section-label reveal-up">Credentials</div>
+    <h2 class="section-title reveal-up">Certifications &<br>National Events.</h2>
+    <div class="credentials-grid">
+      <div class="credential-card reveal-up">
+        <div class="credential-type">Certificate · 2025</div>
+        <div class="credential-name">AI in Pharmaceutical Manufacturing</div>
+        <div class="credential-org">Professional Development Program — GMP Compliance, Intelligent QC, Agentic Automation</div>
+        <div class="credential-year">2025</div>
+      </div>
+      <div class="credential-card reveal-up">
+        <div class="credential-type">Certificate · Aug 2025</div>
+        <div class="credential-name">Omics & Precision Medicine in Human Diseases</div>
+        <div class="credential-org">Pre-Conference Workshop — Multi-omics, AI/ML in Translational Research Pipelines</div>
+        <div class="credential-year">Aug 2025</div>
+      </div>
+      <div class="credential-card reveal-up">
+        <div class="credential-type">National Conclave · Feb 2026</div>
+        <div class="credential-name">SAMPRABHAV 2026</div>
+        <div class="credential-org">NIPER S.A.S. Nagar (Mohali) — Pharmaceutical Management & Drug Policy</div>
+        <div class="credential-year">Feb 7–8, 2026</div>
+      </div>
+      <div class="credential-card reveal-up">
+        <div class="credential-type">Pharma-Fest · 2025</div>
+        <div class="credential-name">Rx MindCraft — Applied Pharma Quiz</div>
+        <div class="credential-org">Drug Mechanisms, Clinical Pharmacology & Pharmaceutical Regulations Challenge</div>
+        <div class="credential-year">2025</div>
+      </div>
+      <div class="credential-card reveal-up">
+        <div class="credential-type">Pharma-Fest · 2025</div>
+        <div class="credential-name">The Rx Lens: From Diagnosis to Cure</div>
+        <div class="credential-org">Case-based pharmaceutical event tracing disease identification through pharmacological intervention</div>
+        <div class="credential-year">2025</div>
+      </div>
+      <div class="credential-card reveal-up">
+        <div class="credential-type">Industrial Tour · 2024</div>
+        <div class="credential-name">Biopharma Industrial Tour</div>
+        <div class="credential-org">Parul University — API Synthesis, Formulation, Schedule M / WHO-GMP Documentation</div>
+        <div class="credential-year">2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" aria-label="Contact Pihu Anand">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label reveal-up" style="justify-content: center;">Contact</div>
+      <h2 class="contact-headline reveal-up">
+        Let's build<br>something <em>precise.</em>
+      </h2>
+      <p class="contact-sub reveal-up">
+        Open to research collaborations, pharmaceutical industry internships, and M.Pharm opportunities. Based in India, working globally.
+      </p>
+      <a href="mailto:pihuanand75@gmail.com" class="contact-email reveal-up" aria-label="Email Pihu Anand">
+        pihuanand75@gmail.com
+      </a>
+      <div class="contact-links reveal-up">
+        <a href="https://www.linkedin.com/in/pihu-anand" class="contact-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">LinkedIn</a>
+        <a href="tel:+917738868005" class="contact-link" aria-label="Call Pihu">+91 77388 68005</a>
+        <a href="#" class="contact-link" aria-label="Location">Vadodara, India</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2026 Pihu Anand. Designed & Built with intent.</span>
+  <span class="footer-back" id="backToTop" role="button" tabindex="0" aria-label="Back to top">Back to top ↑</span>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+(function () {
+  'use strict';
+
+  // ── 1. GSAP Registration ───────────────────────────────────────────
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── 2. Lenis Smooth Scroll ─────────────────────────────────────────
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  // ── 3. Custom Cursor ────────────────────────────────────────────────
+  const cursorDot  = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  const glowCursor = document.getElementById('glowCursor');
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    gsap.set(cursorDot, { x: mouseX, y: mouseY });
+    gsap.to(glowCursor, { x: mouseX, y: mouseY, duration: 1.2, ease: 'power2.out' });
+  });
+
+  (function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    gsap.set(cursorRing, { x: ringX, y: ringY });
+    requestAnimationFrame(animateRing);
+  })();
+
+  document.querySelectorAll('a, button, .skill-card, .project-card, .credential-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('hovered'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovered'));
+  });
+
+  // ── 4. Molecular Canvas (Hero background) ──────────────────────────
+  const canvas = document.getElementById('molecule-canvas');
+  const ctx    = canvas.getContext('2d');
+  let nodes    = [];
+  let W, H;
+
+  function resizeCanvas() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const NODE_COUNT = 60;
+  for (let i = 0; i < NODE_COUNT; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2.5 + 1
+    });
+  }
+
+  function drawMolecules() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Connections
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(0,194,232,${(1 - dist / 120) * 0.25})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Nodes
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,194,232,0.7)';
+      ctx.fill();
+
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+
+    requestAnimationFrame(drawMolecules);
+  }
+  drawMolecules();
+
+  // ── 5. Preloader ────────────────────────────────────────────────────
+  const preloader = document.getElementById('preloader');
+  const counter   = document.getElementById('preloaderCounter');
+  const line      = document.getElementById('preloaderLine');
+  let count = 0;
+  const target = 100;
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  const startTime = performance.now();
+  const duration  = 1400;
+
+  function updateCounter(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeOutCubic(progress);
+    count = Math.floor(eased * target);
+    counter.textContent = String(count).padStart(3, '0');
+    line.style.width = (eased * 100) + '%';
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      setTimeout(finishPreloader, 300);
+    }
+  }
+  requestAnimationFrame(updateCounter);
+
+  function finishPreloader() {
+    gsap.to(preloader, {
+      opacity: 0, duration: 0.6, ease: 'power2.inOut',
+      onComplete: () => {
+        preloader.style.display = 'none';
+        document.body.classList.remove('no-scroll');
+        document.body.classList.add('loaded');
+        runHeroAnimation();
+      }
+    });
+  }
+
+  // ── 6. Hero Animation ───────────────────────────────────────────────
+  function runHeroAnimation() {
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+    tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.7 }, 0.1)
+      .to('.hero-name .word-inner', {
+        opacity: 1, y: '0%', duration: 0.9, stagger: 0.12
+      }, 0.3)
+      .to('.hero-tagline', { opacity: 1, y: 0, duration: 0.8 }, 0.6)
+      .to('.hero-stats', { opacity: 1, y: 0, duration: 0.7 }, 0.85)
+      .to('.hero-actions', { opacity: 1, y: 0, duration: 0.7 }, 1.0)
+      .to('#scrollIndicator', { opacity: 1, duration: 0.6 }, 1.3);
+  }
+
+  // ── 7. Navigation ───────────────────────────────────────────────────
+  const nav       = document.getElementById('mainNav');
+  const hamburger = document.getElementById('hamburger');
+  const overlay   = document.getElementById('mobileOverlay');
+
+  ScrollTrigger.create({
+    start: 'top -80px',
+    onUpdate: (self) => {
+      nav.classList.toggle('scrolled', self.scroll() > 80);
+    }
+  });
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.classList.toggle('open');
+    overlay.classList.toggle('open', isOpen);
+    overlay.setAttribute('aria-hidden', !isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+    document.body.classList.toggle('no-scroll', isOpen);
+  });
+
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('no-scroll');
+    });
+  });
+
+  // ── 8. Scroll Reveal ────────────────────────────────────────────────
+  document.querySelectorAll('.reveal-up').forEach((el) => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 0.85, ease: 'power4.out',
+      scrollTrigger: {
+        trigger: el, start: 'top 88%', toggleActions: 'play none none none'
+      }
+    });
+  });
+
+  document.querySelectorAll('.timeline-entry[data-entry]').forEach((el, i) => {
+    gsap.to(el, {
+      opacity: 1, x: 0, duration: 0.75, ease: 'power4.out',
+      scrollTrigger: {
+        trigger: el, start: 'top 88%', toggleActions: 'play none none none',
+        onEnter: () => {
+          const dot = el.querySelector('.timeline-dot');
+          if (dot) dot.classList.add('active');
+        }
+      },
+      delay: i * 0.08
+    });
+  });
+
+  // Timeline line growth
+  gsap.to('#timelineFill', {
+    height: '100%',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#timeline',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 1
+    }
+  });
+
+  // ── 9. Stat Counters ────────────────────────────────────────────────
+  document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const accentSpan = el.querySelector('.accent');
+    ScrollTrigger.create({
+      trigger: el, start: 'top 85%', once: true,
+      onEnter: () => {
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: target, duration: 2, ease: 'power2.out',
+          onUpdate: () => {
+            const v = Math.round(obj.val);
+            el.childNodes[0].textContent = v;
+          }
+        });
+      }
+    });
+  });
+
+  // ── 10. Cursor Parallax / Depth Layer 8 ────────────────────────────
+  document.addEventListener('mousemove', (e) => {
+    const xP = (e.clientX / window.innerWidth - 0.5) * 2;
+    const yP = (e.clientY / window.innerHeight - 0.5) * 2;
+    gsap.to('.glow-1', { x: xP * -18, y: yP * -10, duration: 1.8, ease: 'power2.out' });
+    gsap.to('.glow-2', { x: xP * -8,  y: yP * -5,  duration: 1.4, ease: 'power2.out' });
+  });
+
+  // ── 11. Card 3D Tilt ────────────────────────────────────────────────
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const cx   = rect.left + rect.width / 2;
+      const cy   = rect.top  + rect.height / 2;
+      const rx   = ((e.clientY - cy) / (rect.height / 2)) * 5;
+      const ry   = ((e.clientX - cx) / (rect.width  / 2)) * -5;
+      gsap.to(card, { rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power2.out' });
+    });
+  });
+
+  // ── 12. Back to Top ─────────────────────────────────────────────────
+  const backBtn = document.getElementById('backToTop');
+  backBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.6 }));
+  backBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') lenis.scrollTo(0, { duration: 1.6 });
+  });
+
+  // ── 13. Skill tags stagger ──────────────────────────────────────────
+  document.querySelectorAll('.skill-card').forEach(card => {
+    const tags = card.querySelectorAll('.skill-tag');
+    gsap.set(tags, { opacity: 0, y: 10 });
+    ScrollTrigger.create({
+      trigger: card, start: 'top 85%', once: true,
+      onEnter: () => {
+        gsap.to(tags, {
+          opacity: 1, y: 0, stagger: 0.05, duration: 0.5,
+          ease: 'power3.out', delay: 0.2
+        });
+      }
+    });
+  });
+
+  // ── 14. Credential cards stagger ────────────────────────────────────
+  const credCards = document.querySelectorAll('.credential-card');
+  gsap.set(credCards, { opacity: 0, y: 32 });
+  ScrollTrigger.create({
+    trigger: '#credentials', start: 'top 80%', once: true,
+    onEnter: () => {
+      gsap.to(credCards, {
+        opacity: 1, y: 0, stagger: 0.08, duration: 0.7, ease: 'power4.out'
+      });
+    }
+  });
+
+  // ── 15. Email copy on click ─────────────────────────────────────────
+  const emailEl = document.querySelector('.contact-email');
+  if (emailEl) {
+    emailEl.addEventListener('click', (e) => {
+      if (navigator.clipboard) {
+        e.preventDefault();
+        navigator.clipboard.writeText('pihuanand75@gmail.com').catch(() => {});
+      }
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
