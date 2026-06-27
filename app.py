@@ -9,6 +9,7 @@ import streamlit as st
 import pandas as pd
 import logging
 import os
+import html
 from pathlib import Path
 
 # Configure logging before imports
@@ -23,16 +24,9 @@ logger = logging.getLogger(__name__)
 from dotenv import load_dotenv
 load_dotenv()
 
-# Internal imports
-from agent.sql_agent import SQLAgent, AgentResponse
-from data.loader import DataLoader, DataLoadError
-from config.settings import settings, AVAILABLE_MODELS
-from utils.session_state import SessionState
-from utils.formatters import ResultFormatter
-
-
 # ─────────────────────────────────────────────────────────────────────────────
-# PAGE CONFIG (must be first Streamlit call)
+# PAGE CONFIG (must be first Streamlit call – placed before internal imports
+# to prevent any imported module from calling st.* first)
 # ─────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="RAG SQL Agent",
@@ -40,6 +34,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Internal imports (after set_page_config to avoid StreamlitAPIException)
+from agent.sql_agent import SQLAgent, AgentResponse
+from data.loader import DataLoader, DataLoadError
+from config.settings import settings, AVAILABLE_MODELS
+from utils.session_state import SessionState
+from utils.formatters import ResultFormatter
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -62,7 +63,7 @@ st.markdown("""
         background: #111827; border: 1px solid #1f2937; border-radius: 8px;
         padding: 12px 16px; font-family: 'JetBrains Mono', 'Courier New', monospace;
         font-size: 0.85rem; color: #a5f3fc; margin: 8px 0;
-        white-space: pre-wrap; word-break: break-all;
+        white-space: pre-wrap; overflow-wrap: break-word;
     }
     .badge-success { background: #14532d; color: #86efac; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; }
     .badge-error   { background: #7f1d1d; color: #fca5a5; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; }
@@ -86,6 +87,8 @@ st.markdown("""
 # INITIALIZE SESSION STATE
 # ─────────────────────────────────────────────────────────────────────────────
 SessionState.init()
+if '_result_dfs' not in st.session_state:
+    st.session_state._result_dfs = {}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -210,6 +213,7 @@ with st.sidebar:
     with col1:
         if st.button("Clear Chat", use_container_width=True):
             SessionState.clear_chat()
+            st.session_state._result_dfs = {}
             st.rerun()
     with col2:
         if st.button("Reset All", use_container_width=True):
@@ -220,6 +224,7 @@ with st.sidebar:
             SessionState.set(SessionState.LOADED_TABLES, [])
             SessionState.set(SessionState.FILES_LOADED, False)
             SessionState.clear_chat()
+            st.session_state._result_dfs = {}
             st.rerun()
 
     st.divider()
@@ -255,7 +260,8 @@ with col2:
     else:
         st.info("Data: No files loaded")
 with col3:
-    st.info(f"Model: {SessionState.get(SessionState.MODEL, 'Not selected')}")
+    model_name = SessionState.get(SessionState.MODEL) or "Not selected"
+    st.info(f"Model: {model_name}")
 
 st.divider()
 
@@ -287,7 +293,7 @@ with chat_container:
 
             if role == 'user':
                 st.markdown(
-                    f'<div class="chat-user"><strong>You</strong><br>{content}</div>',
+                    f'<div class="chat-user"><strong>You</strong><br>{html.escape(content)}</div>',
                     unsafe_allow_html=True
                 )
             else:
@@ -321,13 +327,13 @@ with chat_container:
                         with st.expander("View SQL Query", expanded=False):
                             st.code(metadata['sql_query'], language='sql')
 
-                    # Show result DataFrame for last message only
-                    if metadata.get('has_result_df') and i == len(chat_history) - 1:
-                        result_df = SessionState.get(SessionState.LAST_RESULT_DF)
+                    # Show result DataFrame (stored per-message for full history)
+                    if metadata.get('has_result_df'):
+                        result_df = st.session_state.get('_result_dfs', {}).get(i)
                         if result_df is not None and len(result_df) > 0:
                             with st.expander(
                                 f"View Results ({len(result_df):,} rows × {len(result_df.columns)} cols)",
-                                expanded=True
+                                expanded=(i == len(chat_history) - 1),
                             ):
                                 st.dataframe(
                                     result_df.head(settings.max_preview_rows),
@@ -339,12 +345,20 @@ with chat_container:
                                         f"Showing first {settings.max_preview_rows} of {len(result_df):,} rows"
                                     )
 
-                            # Auto-chart
-                            if ResultFormatter.should_auto_chart(result_df):
-                                fig = ResultFormatter.auto_chart(result_df)
-                                if fig:
-                                    with st.expander("Auto-generated Chart", expanded=True):
-                                        st.plotly_chart(fig, use_container_width=True)
+                            # Auto-chart (wrapped in try/except for missing plotly)
+                            try:
+                                if ResultFormatter.should_auto_chart(result_df):
+                                    fig = ResultFormatter.auto_chart(result_df)
+                                    if fig:
+                                        with st.expander(
+                                            "Auto-generated Chart",
+                                            expanded=(i == len(chat_history) - 1),
+                                        ):
+                                            st.plotly_chart(fig, use_container_width=True)
+                            except Exception as chart_err:
+                                logger.warning(f"Chart generation failed: {chart_err}")
+                        elif result_df is not None and len(result_df) == 0:
+                            st.caption("ℹ️ Query executed successfully but returned 0 rows.")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -372,6 +386,10 @@ if submitted and user_input.strip():
 
     agent: SQLAgent = SessionState.get(SessionState.AGENT)
 
+    # Warn (but don't block) if no data is loaded yet
+    if not SessionState.get(SessionState.FILES_LOADED):
+        st.warning("No data files loaded yet. Upload a file in the sidebar for SQL queries.")
+
     # Create agent if not exists (for greeting/help without file upload)
     if agent is None:
         agent = SQLAgent(
@@ -380,6 +398,12 @@ if submitted and user_input.strip():
             vector_store_dir=settings.chroma_persist_dir,
         )
         SessionState.set(SessionState.AGENT, agent)
+    else:
+        # Sync the model if the user changed it via the sidebar
+        current_model = SessionState.get(SessionState.MODEL)
+        if hasattr(agent, 'model') and agent.model != current_model:
+            agent.model = current_model
+            logger.info(f"Agent model updated to: {current_model}")
 
     # Add user message
     SessionState.add_message("user", user_input)
@@ -387,12 +411,6 @@ if submitted and user_input.strip():
     # Process query
     with st.spinner("Thinking..."):
         response: AgentResponse = agent.process_query(user_input)
-
-    # Store last result DataFrame for display
-    if response.result_df is not None:
-        SessionState.set(SessionState.LAST_RESULT_DF, response.result_df)
-    else:
-        SessionState.set(SessionState.LAST_RESULT_DF, None)
 
     # Add assistant message with metadata
     SessionState.add_message(
@@ -404,9 +422,17 @@ if submitted and user_input.strip():
             "was_repaired": response.was_repaired,
             "attempts": response.attempts,
             "rows_returned": len(response.result_df) if response.result_df is not None else 0,
-            "has_result_df": response.result_df is not None and len(response.result_df) > 0,
+            "has_result_df": response.result_df is not None,
             "intent": response.intent,
         }
     )
+
+    # Store result DataFrame per-message so all results remain viewable in history
+    if response.result_df is not None:
+        chat_history = SessionState.get(SessionState.CHAT_HISTORY)
+        msg_index = len(chat_history) - 1 if chat_history else 0
+        if '_result_dfs' not in st.session_state:
+            st.session_state._result_dfs = {}
+        st.session_state._result_dfs[msg_index] = response.result_df
 
     st.rerun()
